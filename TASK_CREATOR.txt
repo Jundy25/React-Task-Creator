@@ -1,0 +1,192 @@
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+
+const YourComponent = () => {
+  const [tasks, setTasks] = useState([]);
+  const [taskText, setTaskText] = useState('');
+
+  const addTask = () => {
+    if (taskText === '') {
+      alert('Please Enter a Task!');
+      return;
+    } 
+
+    setTasks([...tasks, { text: taskText, done: false }]);
+    setTaskText('');
+  };
+
+  const markAsDone = (index) => {
+    const updatedTasks = [...tasks];
+    updatedTasks[index].done = !updatedTasks[index].done;
+    setTasks(updatedTasks);
+  };
+
+  const deleteTask = (index) => {
+    const updatedTasks = [...tasks];
+    updatedTasks.splice(index, 1);
+    setTasks(updatedTasks);
+  };
+
+  return (
+    <View style={styles.content}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Task Creator</Text>
+        <View style={styles.add}>
+          <View style={styles.bar}>
+            <TextInput
+              style={styles.input}
+              placeholder="Task to be done ..."
+              value={taskText}
+              onChangeText={(text) => setTaskText(text)}
+            />
+          </View>
+          <View style={styles.btn}>
+          <TouchableOpacity
+            style={styles.addbtn} // Styling for the "Add" button
+            onPress={addTask}
+          >
+            <Text style={styles.addText}>Add</Text>
+          </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+      <ScrollView style={styles.scrollView}>
+      {tasks.map((task, index) => (
+        
+        <View key={index} style={styles.task}>
+          <Text style={task.done ? styles.doneTask : styles.taskText}>{task.text}</Text>
+          <TouchableOpacity onPress={() => markAsDone(index)} style={task.done ? styles.undoneButton : styles.doneButton}>
+            <Text>{task.done ? 'Undone' : 'Done'}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => deleteTask(index)} style={styles.deleteButton}>
+            <Text>Delete</Text>
+          </TouchableOpacity>
+        </View>
+        
+      ))}
+      </ScrollView>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  content: {
+    flexDirection: 'column',
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: 'cadetblue',
+  },
+  container: {
+    marginTop: 70,
+    alignItems: 'center',
+    flexDirection: 'column',
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: 'aliceblue',
+    width: 'auto', 
+    marginHorizontal: 'auto', 
+  },
+  //   container: {
+  //     display: 'flex',
+  //     flexDirection: 'column',
+  //     borderRadius: '5px',
+  //     borderStyle: 'solid', 
+  //     borderWidth: 'medium',
+  //     borderColor: 'aliceblue',
+  //     width: 'fit-content',
+  //     margin: 'auto',
+  // },
+  
+  title: {
+    fontSize: 20,
+    textAlign: 'center',
+    color: 'aliceblue',
+    fontWeight: 'bold',
+  },
+  add: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 6,
+    display: 'flex',
+    flexDirection: 'row',
+    backgroundColor: 'aliceblue',
+  },
+
+  bar: {
+    padding: 5,
+    
+  },
+  btn: {
+    padding: 5,
+  },
+  int: {
+    width: 240,
+  },
+  input: {
+    flex: 1,
+    height: 40,
+    width: 250,
+    borderWidth: 1,
+    padding: 10, 
+    borderColor: 'rgb(65, 108, 110)',
+  },
+
+  addbtn: {
+    backgroundColor: 'cadetblue',
+    borderRadius: 5,
+    width: 40,
+    borderWidth: 2,
+    padding: 5,
+    cursor: 'pointer',
+    shadowColor: 'rgb(65, 108, 110)',
+    shadowOffset: { width: 0, height: 4 },
+  },
+  addButton: {
+    backgroundColor: 'cadetblue',
+    borderRadius: 5,
+    padding: 5,
+    marginRight: 2,
+  },
+
+  task: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 6,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: 'aliceblue',
+    borderRadius: 5,
+    width: 315,
+    backgroundColor: 'cadetblue',
+  },
+  taskText: {
+    flex: 1,
+    fontSize: 16,
+    color:'aliceblue',
+  },
+  doneTask: {
+    flex: 1,
+    fontSize: 16,
+    textDecorationLine: 'line-through',
+  },
+  doneButton: {
+    backgroundColor: '#A0D8B3',
+    borderRadius: 5,
+    padding: 5,
+    marginRight: 2,
+  },
+  undoneButton: { 
+    backgroundColor: '#7ba589',
+    borderRadius: 5,
+    padding: 5,
+    marginRight: 2,
+  },
+  deleteButton: {
+    backgroundColor: '#E06469', 
+    borderRadius: 5,
+    padding: 5,
+  },
+});
+
+export default YourComponent; 
